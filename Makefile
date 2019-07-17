@@ -13,6 +13,10 @@ up:
 reload:
 	vagrant reload
 
+.PHONY: halt
+halt:
+	vagrant halt
+
 .PHONY: clean
 clean:
 	vagrant destroy --force
