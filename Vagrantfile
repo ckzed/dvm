@@ -24,7 +24,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 # Install development tools
 echo "Installing development tools..."
-sudo apt-get -q install -y make pkg-config librdkafka-dev
+sudo apt-get -q install -y make pkg-config librdkafka-dev ntpdate
 
 # Install golang
 echo "Installing Go..."
