@@ -1,21 +1,13 @@
 .PHONY: all
-all: reload ssh
+all: update reload ssh
 
-.PHONY: ssh
-ssh:
-	vagrant ssh
+.PHONY: ssh reload up halt
+ssh reload up halt:
+	vagrant $@
 
-.PHONY: up
-up:
-	vagrant up
-
-.PHONY: reload
-reload:
-	vagrant reload
-
-.PHONY: halt
-halt:
-	vagrant halt
+.PHONY: update
+update:
+	vagrant box $@
 
 .PHONY: clean
 clean:

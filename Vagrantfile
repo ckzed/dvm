@@ -33,6 +33,12 @@ OS=linux
 ARCH=amd64
 curl -fsSL https://dl.google.com/go/go${VERSION}.${OS}-${ARCH}.tar.gz | sudo tar -C /usr/local -xzf -
 
+# Setup sudo
+# echo vagrant ALL=NOPASSWD:ALL > /etc/sudoers.d/vagrant
+
+# Copy files
+cp /vagrant/bashrc /home/vagrant/.bashrc
+
 SCRIPT
 
 Vagrant.configure("2") do |config|
