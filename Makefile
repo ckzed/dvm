@@ -1,9 +1,13 @@
 .PHONY: all
 all: update reload ssh
 
-.PHONY: ssh reload up halt
-ssh reload up halt:
+.PHONY: up ssh reload halt
+up ssh reload halt:
 	vagrant $@
+
+.PHONY: provision
+provision:
+	vagrant up --provision
 
 .PHONY: update
 update:
