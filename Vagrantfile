@@ -48,7 +48,7 @@ Vagrant.configure("2") do |config|
 
   # Increase memory for Virtualbox
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "4096"
+    vb.memory = "8192"
   end
 
   # Increase disk size
