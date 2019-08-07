@@ -1,5 +1,5 @@
 .PHONY: all
-all: update up ssh
+all: up ssh
 
 .PHONY: up ssh reload halt
 up ssh reload halt:
