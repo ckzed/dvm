@@ -36,6 +36,11 @@ OS=linux
 ARCH=amd64
 curl -fsSL https://dl.google.com/go/go${VERSION}.${OS}-${ARCH}.tar.gz | sudo tar -C /usr/local -xzf -
 
+# Install pip3 and modules
+echo "Installing pip3..."
+apt-get install -y python3-pip
+pip3 install tensorflow scikit-learn
+
 # Install linuxkit
 PATH=/usr/local/go/bin:$PATH
 GOPATH=/usr/local/go
@@ -43,10 +48,14 @@ echo "Installing linuxkit"
 go get -u github.com/linuxkit/linuxkit/src/cmd/linuxkit
 
 # Install goreleaser
-mkdir /build
+mkdir -p /build
 cd /build
-git clone https://github.com/goreleaser/goreleaser
-cd goreleaser
+if [ -d goreleaser ]; then
+   cd goreleaser && git pull
+else
+   git clone https://github.com/goreleaser/goreleaser
+   cd goreleaser
+fi
 
 # get dependencies using go modules (needs go 1.11+)
 go get ./...
@@ -60,10 +69,10 @@ go build -o goreleaser .
 # Setup sudo
 # echo vagrant ALL=NOPASSWD:ALL > /etc/sudoers.d/vagrant
 
-# Copy files
+# Copy SSH keys
 cp /vagrant/.bashrc-vagrant /home/vagrant/.bashrc
-mkdir -p /home/vagrant/.config
-cp -r /vagrant/.config/zededa /home/vagrant/.config/
+cp /vagrant/.ssh/id_rsa* /home/vagrant/.ssh/
+cp /vagrant/.ssh/config /home/vagrant/.ssh/
 
 SCRIPT
 
