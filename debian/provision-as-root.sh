@@ -2,20 +2,8 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-# Build dep
-apt -yqq build-dep linux
-
-# Add Virtualbox Guest Additions
-# apt-add-repository non-free
-# apt -yqq update
-# apt -yqq install virtualbox-guest-additions-iso
-# mount -o loop  /usr/share/virtualbox/VBoxGuestAdditions.iso  /mnt
-# /mnt/VBoxLinuxAdditions.run
-# /sbin/rcvboxadd quicksetup $(uname -r)
-# umount /mnt
-
 # Install docker
-# apt-get -yqq update
+apt-get -yqq update
 apt-get -yqq remove docker docker-engine docker.io containerd runc ||:
 apt-get -yqq install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
