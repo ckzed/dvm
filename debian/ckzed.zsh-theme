@@ -1,5 +1,11 @@
 function git_prompt_info() {
-    git rev-parse --abbrev-ref HEAD 2>/dev/null || pwd | sed -e "s,$HOME,~,"
+    branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    if [ -z "$branch" ]; then
+        pwd | sed -e "s,$HOME,~,"
+    else
+        repo=$(basename $(git rev-parse --show-toplevel))
+        echo "${repo} ${branch}"
+    fi
 }
 
 PROMPT='%{$fg_bold[magenta]%}%m%{$reset_color%} %{$fg_bold[white]%}$(git_prompt_info)%{$reset_color%}%# '
