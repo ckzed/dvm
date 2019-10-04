@@ -1,4 +1,6 @@
-#!/bin/sh -e
+#!/bin/sh
+
+set -e
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -23,7 +25,7 @@ chmod +x /usr/local/bin/docker-compose
 
 # Install development tools
 echo "Installing development tools..."
-apt-get -yqq install -y make pkg-config librdkafka-dev ntpdate
+apt-get -yqq install -y make pkg-config librdkafka-dev ntpdate jq
 
 # Install golang
 echo "Installing Go..."
@@ -36,7 +38,25 @@ curl -fsSL https://dl.google.com/go/go${VERSION}.${OS}-${ARCH}.tar.gz | sudo tar
 # apt-get install -yqq nodejs npm
 # npm install npm@latest -g
 
+# Install zsh
+echo "Installing zsh..."
+apt-get -yqq install -y zsh
+sudo -u vagrant sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+chsh -s /bin/zsh vagrant
+
+# Copy shell rc
+echo "Copying rc files..."
+[ -f /vagrant/bashrc ] && cp /vagrant/bashrc /home/vagrant/.bashrc
+[ -f /vagrant/zshrc ] && cp /vagrant/zshrc /home/vagrant/.zshrc
+[ -f /vagrant/ckzed.zsh-theme ] && cp /vagrant/ckzed.zsh-theme /home/vagrant/.oh-my-zsh/themes/
+
 # Copy SSH keys
-cp /vagrant/bashrc /home/vagrant/.bashrc
+echo "Copying SSH files..."
 cp /vagrant/ssh/id_rsa* /home/vagrant/.ssh/
 cp /vagrant/ssh/config /home/vagrant/.ssh/
+
+# Docker helper aliases
+echo "Copying docker aliases files..."
+[ -f /vagrant/docker-aliases ] && cp /vagrant/docker-aliases /home/vagrant/.docker-aliases
+
+echo "All done!"
