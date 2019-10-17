@@ -1,4 +1,4 @@
-PATH=/usr/local/go/bin:$PATH
+PATH=/usr/local/go/bin:$PATH:/usr/sbin:/sbin:
 export PATH
 
 HISTFILE=$HOME/.vagrant/history

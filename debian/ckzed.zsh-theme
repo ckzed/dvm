@@ -4,7 +4,7 @@ function git_prompt_info() {
         pwd | sed -e "s,$HOME,~,"
     else
         repo=$(basename $(git rev-parse --show-toplevel))
-        echo "${repo} ${branch}"
+        echo "${repo} %{$fg_bold[green]%}${branch}%{$reset_color%}"
     fi
 }
 
