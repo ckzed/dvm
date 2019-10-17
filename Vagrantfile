@@ -1,7 +1,7 @@
-#!/bin/sh
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 
-set -e
-
+$PROVISION_SCRIPT = <<-SCRIPT
 export DEBIAN_FRONTEND=noninteractive
 
 # Install docker
@@ -12,8 +12,10 @@ curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
 apt-get -yqq update
 apt-get -yqq install docker-ce docker-ce-cli containerd.io -y
+
 # Restart docker to make sure we get the latest version of the daemon if there is an upgrade
 service docker restart
+
 # Make sure we can actually use docker as the vagrant user
 usermod -aG docker vagrant
 docker --version
@@ -34,29 +36,38 @@ OS=linux
 ARCH=amd64
 curl -fsSL https://dl.google.com/go/go${VERSION}.${OS}-${ARCH}.tar.gz | sudo tar -C /usr/local -xzf -
 
-# # Install node?
-# apt-get install -yqq nodejs npm
-# npm install npm@latest -g
-
-# Install zsh
-echo "Installing zsh..."
-apt-get -yqq install -y zsh
-sudo -u vagrant sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-chsh -s /bin/zsh vagrant
-
 # Copy shell rc
 echo "Copying rc files..."
 [ -f /vagrant/bashrc ] && cp /vagrant/bashrc /home/vagrant/.bashrc
-[ -f /vagrant/zshrc ] && cp /vagrant/zshrc /home/vagrant/.zshrc
-[ -f /vagrant/ckzed.zsh-theme ] && cp /vagrant/ckzed.zsh-theme /home/vagrant/.oh-my-zsh/themes/
 
-# Copy SSH keys
-echo "Copying SSH files..."
-cp /vagrant/ssh/id_rsa* /home/vagrant/.ssh/
-cp /vagrant/ssh/config /home/vagrant/.ssh/
+:
+SCRIPT
 
-# Docker helper aliases
-echo "Copying docker aliases files..."
-[ -f /vagrant/docker-aliases ] && cp /vagrant/docker-aliases /home/vagrant/.docker-aliases
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/debian10"
+  config.vm.hostname = ENV['USER'] + "-vm"
 
-echo "All done!"
+  # Increase memory for Virtualbox
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "4096"
+    vb.name = ENV['USER'] + "-buster"
+  end
+  config.vm.define :buster
+  # Increase disk size
+  config.disksize.size = '64GB'
+
+  # Networking
+  config.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)",
+                    :mac => "5CA1AB1E0002", use_dhcp_assigned_default_route: true
+  # SSH
+  config.ssh.forward_agent = true # So that boxes don't have to setup key-less ssh
+
+  # Mount directories that we need in the VM
+  config.vm.synced_folder ENV['HOME'] + "/Work", "/home/vagrant/Work"
+  config.vm.synced_folder ENV['HOME'] + "/.config", "/home/vagrant/.config"
+  config.vm.synced_folder ENV['HOME'] + "/.vagrant", "/home/vagrant/.vagrant"
+  config.vm.synced_folder ".", "/vagrant", type: "rsync"
+
+  # Provisioning script
+  config.vm.provision "shell", inline: $PROVISION_SCRIPT
+end
