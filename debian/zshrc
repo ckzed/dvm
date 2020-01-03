@@ -12,13 +12,14 @@ export DISABLE_UPDATE_PROMPT="true"
 export CASE_SENSITIVE="true"
 export DISABLE_UNTRACKED_FILES_DIRTY="true"
 export GOPATH="$HOME/.go"
-export PATH=$PATH:${GOPATH}/bin:/usr/local/sbin:
+export PYPATH="$HOME/.local/bin"
+export PATH=$PATH:${GOPATH}/bin:${PYPATH}:/usr/local/sbin:
 export GROOVY_HOME=/usr/local/opt/groovy/libexec
 export HIST_STAMPS="yyyy-mm-dd"
 export HISTIGNORE=cd:bg:fg
 export HISTSIZE=50000
 export SAVEHIST=50000
-export HISTFILE=$HOME/.zsh_history
+export HISTFILE="/vagrant/history"
 export LANG=en_US.UTF-8
 
 alias adate='TZ=America/Los_Angeles date'

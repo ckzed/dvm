@@ -6,15 +6,15 @@
 
       - name: Update System Package Cache
         apt: update_cache=yes
-        sudo: yes
+        become: yes
 
       - name: Upgrade System Packages
         apt: upgrade=full
-        sudo: yes
+        become: yes
 
       - name: Install Packages
         apt: name= state=latest
-        sudo: yes
+        become: yes
         with_items:
           - apt-transport-https
           - ca-certificates

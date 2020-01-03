@@ -25,7 +25,7 @@ chmod +x /usr/local/bin/docker-compose
 
 # Install development tools
 echo "Installing development tools..."
-apt-get -yqq install -y make pkg-config librdkafka-dev ntpdate jq
+apt-get -yqq install -y make pkg-config librdkafka-dev ntpdate jq python3-pip
 
 # Install golang
 echo "Installing Go..."

@@ -14,14 +14,22 @@ Vagrant.configure("2") do |config|
   # Increase disk size
   config.disksize.size = '64GB'
 
-  config.vm.provision "ansible" do |an|
-    an.playbook = "vagrant.yml"
-  end
+  #config.vm.provision "ansible" do |an|
+  #  an.playbook = "vagrant.yml"
+  #end
 
   # Networking
-  config.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)",
-                    :mac => "5CA1AB1E0002", use_dhcp_assigned_default_route: true
+  # Name:            en0: Wi-Fi (AirPort)
+  # Name:            p2p0
+  # Name:            awdl0
+  # Name:            llw0
+  # Name:            en1: Thunderbolt 1
+  # Name:            en2: Thunderbolt 2
+  # Name:            bridge0
+  # config.vm.network "public_network", bridge: "bridge0",
+  # :mac => "5CA1AB1E0002", use_dhcp_assigned_default_route: true
   # SSH
+
   config.ssh.forward_agent = true # So that boxes don't have to setup key-less ssh
   # config.ssh.insert_key = false   # To generate a new ssh key and don't use the default Vagrant one
 
@@ -33,6 +41,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/vagrant", type: "rsync"
 
   # Provisioning script
-  config.vm.provision "shell", inline: "apt-get -qqy install apt-transport-https"
+  config.vm.provision "shell", inline: "sudo cp /vagrant/interfaces /etc/network/interfaces"
+  config.vm.provision "shell", inline: "apt-get -qqy install apt-transport-https python-apt"
   config.vm.provision "shell", path: "/Users/chirag/Research/dvm/debian/provision-as-root.sh"
 end
