@@ -44,10 +44,10 @@ apt-get -yqq install -y zsh
 sudo -u vagrant sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 chsh -s /bin/zsh vagrant
 
-# Add ansible user
-echo "Adding ansible user"
-useradd -g users -m -s /bin/bash ansible
-ln -s /home/vagrant/Work /home/ansible/
+# Add ubuntu user for running ansible
+echo "Adding ubuntu user"
+useradd -g users -m -s /bin/bash ubuntu
+ln -s /home/vagrant/Work /home/ubuntu/
 
 # Copy shell rc
 echo "Copying rc files..."
