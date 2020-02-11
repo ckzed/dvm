@@ -25,7 +25,7 @@ chmod +x /usr/local/bin/docker-compose
 
 # Install development tools
 echo "Installing development tools..."
-apt-get -yqq install -y make pkg-config librdkafka-dev ntpdate jq python3-pip
+apt-get -yqq install -y make pkg-config librdkafka-dev ntpdate jq python3-pip ansible
 
 # Install golang
 echo "Installing Go..."
@@ -43,6 +43,11 @@ echo "Installing zsh..."
 apt-get -yqq install -y zsh
 sudo -u vagrant sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 chsh -s /bin/zsh vagrant
+
+# Add ansible user
+echo "Adding ansible user"
+useradd -g users -m -s /bin/bash ansible
+ln -s /home/vagrant/Work /home/ansible/
 
 # Copy shell rc
 echo "Copying rc files..."

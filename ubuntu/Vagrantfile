@@ -1,56 +1,12 @@
-$script = <<SCRIPT
-
-echo "Vagrant provisioning running as ${UID}:${GID}"
-
-echo "Installing Docker..."
-apt-get -q update
-apt-get -q remove docker docker-engine docker.io containerd runc
-apt-get -q install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-apt-key fingerprint 0EBFCD88
-add-apt-repository \
-      "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-      $(lsb_release -cs) \
-      stable"
-apt-get -q update
-apt-get -q install docker-ce docker-ce-cli containerd.io -y
-# Restart docker to make sure we get the latest version of the daemon if there is an upgrade
-service docker restart
-# Make sure we can actually use docker as the vagrant user
-usermod -aG docker vagrant
-docker --version
-
-# Install docker-compose
-echo "Installing docker-compose..."
-curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-
-# Install development tools
-echo "Installing development tools..."
-apt-get -q install -y make pkg-config librdkafka-dev ntpdate
-
-# Install golang
-echo "Installing Go..."
-VERSION=1.12.7
-OS=linux
-ARCH=amd64
-curl -fsSL https://dl.google.com/go/go${VERSION}.${OS}-${ARCH}.tar.gz | sudo tar -C /usr/local -xzf -
-
-# Copy SSH keys
-cp /vagrant/.bashrc-vagrant /home/vagrant/.bashrc
-cp /vagrant/.ssh/id_rsa* /home/vagrant/.ssh/
-cp /vagrant/.ssh/config /home/vagrant/.ssh/
-
-SCRIPT
-
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/cosmic64"
+  # config.vm.box = "ubuntu/cosmic64"
+  config.vm.box = "generic/ubuntu1804"
   config.vm.hostname = "ckzed-vm"
-  config.vm.provision "shell", inline: $script
 
   # Increase memory for Virtualbox
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "6144"
+    vb.memory = "4096"
+    vb.name = "ckzed-bionic"
   end
 
   # Increase disk size
@@ -68,4 +24,11 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "/Users/chirag/Research", "/home/vagrant/Research"
   config.vm.synced_folder "/Users/chirag/.config", "/home/vagrant/.config"
   config.vm.synced_folder "/Users/chirag/.vagrant", "/home/vagrant/.vagrant"
+  config.vm.synced_folder ".", "/vagrant", type: "rsync"
+
+  # Provisioning script
+  config.vm.provision "shell", inline: "sudo cp -av /vagrant/interfaces /etc/network/interfaces"
+  config.vm.provision "shell", inline: "sudo cp -av /vagrant/resolv.conf /etc/resolv.conf"
+  config.vm.provision "shell", inline: "apt-get -qqy install apt-transport-https python-apt"
+  config.vm.provision "shell", path: "provision-as-root.sh"
 end
