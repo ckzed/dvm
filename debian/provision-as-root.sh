@@ -23,6 +23,10 @@ echo "Installing docker-compose..."
 curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
+# Install environment utilities
+echo "Installing environment utilities"
+apt-get -yqq install -y ntp
+
 # Install development tools
 echo "Installing development tools..."
 apt-get -yqq install -y make pkg-config librdkafka-dev ntpdate jq python3-pip ansible
