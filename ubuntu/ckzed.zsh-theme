@@ -1,0 +1,1 @@
+../debian/ckzed.zsh-theme
