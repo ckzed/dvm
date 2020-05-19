@@ -60,9 +60,9 @@ echo "Copying rc files..."
 [ -f /vagrant/ckzed.zsh-theme ] && cp /vagrant/ckzed.zsh-theme /home/vagrant/.oh-my-zsh/themes/
 
 # Copy SSH keys
-echo "Copying SSH files..."
-cp /vagrant/ssh/id_rsa* /home/vagrant/.ssh/
-cp /vagrant/ssh/config /home/vagrant/.ssh/
+# echo "Copying SSH files..."
+# cp /vagrant/ssh/id_rsa* /home/vagrant/.ssh/
+# cp /vagrant/ssh/config /home/vagrant/.ssh/
 
 # Docker helper aliases
 echo "Copying docker aliases files..."
