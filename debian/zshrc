@@ -28,7 +28,7 @@ alias cdup='cd $(git rev-parse --show-toplevel)'
 
 trap 'fc -W' 0 1 2 15
 
-plugins=(git python go)
+plugins=(git python golang)
 source $ZSH/oh-my-zsh.sh
 
 bindkey '^r' history-incremental-search-backward

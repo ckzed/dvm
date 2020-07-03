@@ -53,6 +53,16 @@ cd /home/vagrant/
 sudo -u vagrant HOME=/home/vagrant sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 chsh -s /bin/zsh vagrant
 
+# Install ansible
+echo "Installing ansible"
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install -y ansible
+
+# Install awscli
+echo "Installing awscli"
+sudo python3 -m pip install awscli
+
 # Copy shell rc
 echo "Copying rc files..."
 [ -f /vagrant/bashrc ] && cp /vagrant/bashrc /home/vagrant/.bashrc
