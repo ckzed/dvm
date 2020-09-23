@@ -35,6 +35,12 @@ chmod +x /usr/local/bin/docker-compose
 echo "Installing development tools..."
 apt-get -yqq install -y make pkg-config librdkafka-dev ntpdate jq python3-pip
 
+## # Install container-diff
+## echo "Installing container-diff..."
+## curl -fsSLO https://storage.googleapis.com/container-diff/latest/container-diff-linux-amd64
+## mv container-diff-linux-amd64 /usr/local/bin/container-diff
+## chmod +x /usr/local/bin/container-diff
+
 # Install golang
 echo "Installing Go..."
 
