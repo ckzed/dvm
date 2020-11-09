@@ -6,6 +6,8 @@ export DEBIAN_FRONTEND=noninteractive
 export DC_VERSION=1.25.4
 export GO_VERSION=1.12
 
+oldpwd=$(pwd)
+
 # Install docker
 apt-get -yqq update
 apt-get -yqq remove docker docker-engine docker.io containerd runc ||:
@@ -33,7 +35,7 @@ chmod +x /usr/local/bin/docker-compose
 
 # Install development tools
 echo "Installing development tools..."
-apt-get -yqq install -y make pkg-config librdkafka-dev ntpdate jq python3-pip
+apt-get -yqq install -y make pkg-config librdkafka-dev ntpdate jq python3-pip gdebi-core
 
 ## # Install container-diff
 ## echo "Installing container-diff..."
@@ -51,6 +53,12 @@ curl -fsSL https://dl.google.com/go/go${GO_VERSION}.${OS}-${ARCH}.tar.gz | sudo 
 # # Install node?
 # apt-get install -yqq nodejs npm
 # npm install npm@latest -g
+
+# Install dive
+echo "Installing dive..."
+# /usr/local/go/bin/go get github.com/wagoodman/dive
+wget -O /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.9.2/dive_0.9.2_linux_amd64.deb
+sudo gdebi -n /tmp/dive.deb
 
 # Install zsh
 echo "Installing zsh..."
@@ -84,4 +92,5 @@ echo "Copying rc files..."
 echo "Copying docker aliases files..."
 [ -f /vagrant/docker-aliases ] && cp /vagrant/docker-aliases /home/vagrant/.docker-aliases
 
+cd "${oldpwd}"
 echo "All done!"
