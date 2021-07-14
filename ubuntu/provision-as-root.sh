@@ -4,7 +4,7 @@ set -e
 
 export DEBIAN_FRONTEND=noninteractive
 export DC_VERSION=1.25.4
-export GO_VERSION=1.12
+export GO_VERSION=1.16.3
 
 oldpwd=$(pwd)
 
@@ -55,10 +55,10 @@ curl -fsSL https://dl.google.com/go/go${GO_VERSION}.${OS}-${ARCH}.tar.gz | sudo 
 # npm install npm@latest -g
 
 # Install dive
-echo "Installing dive..."
+# echo "Installing dive..."
 # /usr/local/go/bin/go get github.com/wagoodman/dive
-wget -O /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.9.2/dive_0.9.2_linux_amd64.deb
-sudo gdebi -n /tmp/dive.deb
+# wget -O /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.9.2/dive_0.9.2_linux_amd64.deb
+# sudo gdebi -n /tmp/dive.deb
 
 # Install zsh
 echo "Installing zsh..."
@@ -73,15 +73,20 @@ sudo apt-add-repository ppa:ansible/ansible
 sudo apt-get update
 sudo apt-get install -y ansible
 
-# Install awscli
-echo "Installing awscli"
-sudo python3 -m pip install awscli
+# Install Python utilities
+echo "Installing python utilities"
+sudo python3 -m pip install awscli yq
 
 # Copy shell rc
 echo "Copying rc files..."
 [ -f /vagrant/bashrc ] && cp /vagrant/bashrc /home/vagrant/.bashrc
 [ -f /vagrant/zshrc ] && cp /vagrant/zshrc /home/vagrant/.zshrc
 [ -f /vagrant/ckzed.zsh-theme ] && cp /vagrant/ckzed.zsh-theme /home/vagrant/.oh-my-zsh/themes/
+
+# Copy git credentials
+echo "Copying Git configuration..."
+[ -f /vagrant/gitconfig ] && cp /vagrant/gitconfig /home/vagrant/.gitconfig
+[ -f /vagrant/git-credentials ] && cp /vagrant/git-credentials /home/vagrant/.git-credentials
 
 # Copy SSH keys
 # echo "Copying SSH files..."
