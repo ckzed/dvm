@@ -3,7 +3,7 @@
 set -e
 
 export DEBIAN_FRONTEND=noninteractive
-export DC_VERSION=1.25.4
+export DC_VERSION=1.28.0
 export GO_VERSION=1.16.3
 
 oldpwd=$(pwd)
